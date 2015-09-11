@@ -43,7 +43,14 @@ function($) {
     }, delay * 1000);
   }
 
-  $.fn.animateFrom = function(fromProperties, duration, easing, callback, delay) {
+  $.fn.animateFrom = function(options, fromProperties, duration) {
+    var defaults = {
+      easing: 'ease-out',
+      callback: null,
+      delay: 0
+    }
+    var options = $.extend({}, defaults, options);
+
     // get inital styles from element
     var originalProperties = $(this).getStyleObject();
     $(this).css(
@@ -52,27 +59,33 @@ function($) {
     // check what values have changed
     var oldValues = filter($(this).getStyleObject(), originalProperties);
 
-    $(this).animate(oldValues, duration * 1000, easing, function() {
-      if (callback) {
-        callback();
+    $(this).animate(oldValues, options.duration * 1000, options.easing, function() {
+      if (options.callback) {
+        options.callback();
       } else {
-        callback
+        options.callback
       }
-    }, delay * 1000);
+    }, options.delay * 1000);
   }
 
-  $.fn.animateTo = function(toProperties, duration, easing, callback, delay) {
+  $.fn.animateTo = function(options, toProperties, duration) {
     var that = $(this);
+    var defaults = {
+      easing: 'ease-out',
+      callback: null,
+      delay: 0
+    }
+    var options = $.extend({}, defaults, options);
     setTimeout(function() {
       $(that).animate(
-        toProperties, duration * 1000, easing,
+        toProperties, options.duration * 1000, options.easing,
         function() {
-          if (callback) {
-            callback();
+          if (options.callback) {
+            options.callback();
           } else {
-            callback
+            options.callback
           }
         }, 0);
-    }, delay * 1000);
+    }, options.delay * 1000);
   }
 })(Zepto);

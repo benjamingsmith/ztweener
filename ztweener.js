@@ -1,4 +1,4 @@
-function($) {
+(function($) {
   function filter(obj1, obj2) {
     var result = {};
     for (key in obj1) {
@@ -43,14 +43,7 @@ function($) {
     }, delay * 1000);
   }
 
-  $.fn.animateFrom = function(options, fromProperties, duration) {
-    var defaults = {
-      easing: 'ease-out',
-      callback: null,
-      delay: 0
-    }
-    var options = $.extend({}, defaults, options);
-
+  $.fn.animateFrom = function(fromProperties, duration, easing, callback, delay) {
     // get inital styles from element
     var originalProperties = $(this).getStyleObject();
     $(this).css(
@@ -59,33 +52,27 @@ function($) {
     // check what values have changed
     var oldValues = filter($(this).getStyleObject(), originalProperties);
 
-    $(this).animate(oldValues, options.duration * 1000, options.easing, function() {
-      if (options.callback) {
-        options.callback();
+    $(this).animate(oldValues, duration * 1000, easing, function() {
+      if (callback) {
+        callback();
       } else {
-        options.callback
+        callback
       }
-    }, options.delay * 1000);
+    }, delay * 1000);
   }
 
-  $.fn.animateTo = function(options, toProperties, duration) {
+  $.fn.animateTo = function(toProperties, duration, easing, callback, delay) {
     var that = $(this);
-    var defaults = {
-      easing: 'ease-out',
-      callback: null,
-      delay: 0
-    }
-    var options = $.extend({}, defaults, options);
     setTimeout(function() {
       $(that).animate(
-        toProperties, options.duration * 1000, options.easing,
+        toProperties, duration * 1000, easing,
         function() {
-          if (options.callback) {
-            options.callback();
+          if (callback) {
+            callback();
           } else {
-            options.callback
+            callback
           }
         }, 0);
-    }, options.delay * 1000);
+    }, delay * 1000);
   }
 })(Zepto);

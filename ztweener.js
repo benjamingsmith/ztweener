@@ -1,5 +1,6 @@
 (function($) {
   var allDelays = [];
+
   function filter(obj1, obj2) {
     var result = {};
     for (key in obj1) {
@@ -45,9 +46,9 @@
     allDelays.push(newDelay);
   }
 
-  $.killDelays = function(){
+  $.killDelays = function() {
     console.log('killed');
-    $.each(allDelays,function(i,v){
+    $.each(allDelays, function(i, v) {
       clearTimeout(v);
     });
   }

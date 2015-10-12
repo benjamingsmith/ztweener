@@ -47,19 +47,19 @@
     // check if left, top, right, or bottom is animated from
     if ('left' in fromProperties && $(this).getStyleObject().left == 'auto') {
       $(this).css({
-        'left': '0px'
+        'left': '0'
       });
     } else if ('right' in fromProperties && $(this).getStyleObject().right == 'auto') {
       $(this).css({
-        'right': '0px'
+        'right': '0'
       });
     } else if ('top' in fromProperties && $(this).getStyleObject().top == 'auto') {
       $(this).css({
-        'top': '0px'
+        'top': '0'
       });
     } else if ('bottom' in fromProperties && $(this).getStyleObject().bottom == 'auto') {
       $(this).css({
-        'bottom': '0px'
+        'bottom': '0'
       });
     }
 

@@ -1,4 +1,5 @@
 (function($) {
+  var allDelays = [];
   function filter(obj1, obj2) {
     var result = {};
     for (key in obj1) {
@@ -38,9 +39,17 @@
   }
 
   $.delayedCall = function(delay, funct) {
-    setTimeout(function() {
+    var newDelay = setTimeout(function() {
       funct();
     }, delay * 1000);
+    allDelays.push(newDelay);
+  }
+
+  $.killDelays = function(){
+    console.log('killed');
+    $.each(allDelays,function(i,v){
+      clearTimeout(v);
+    });
   }
 
   $.fn.animateFrom = function(fromProperties, duration, easing, callback, delay) {

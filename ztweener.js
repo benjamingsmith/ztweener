@@ -1,17 +1,11 @@
-(function($) {
-  var allDelays = [];
+/** version 1.1 **/
+// added killDelays
+// fixing animateFrom in Firefox
 
-  function filter(obj1, obj2) {
-    var result = {};
-    for (key in obj1) {
-      if (obj2[key] != obj1[key]) result[key] = obj2[key];
-      if (typeof obj2[key] == 'array' && typeof obj1[key] == 'array')
-        result[key] = arguments.callee(obj1[key], obj2[key]);
-      if (typeof obj2[key] == 'object' && typeof obj1[key] == 'object')
-        result[key] = arguments.callee(obj1[key], obj2[key]);
-    }
-    return result;
-  }
+(function($) {
+  // all delayedCalls will be placed in here in case they need to be killed
+  var allDelays = [];
+  var currentBrowser = $.browser;
 
   $.fn.getStyleObject = function() {
     var dom = this.get(0);
@@ -47,48 +41,60 @@
   }
 
   $.killDelays = function() {
-    console.log('killed');
     $.each(allDelays, function(i, v) {
       clearTimeout(v);
     });
   }
 
   $.fn.animateFrom = function(fromProperties, duration, easing, callback, delay) {
+    function filter(obj1, obj2) {
+      var result = {};
+      for (key in obj1) {
+        if (obj2[key] != obj1[key]) result[key] = obj2[key];
+        if (typeof obj2[key] == 'array' && typeof obj1[key] == 'array')
+          result[key] = arguments.callee(obj1[key], obj2[key]);
+        if (typeof obj2[key] == 'object' && typeof obj1[key] == 'object')
+          result[key] = arguments.callee(obj1[key], obj2[key]);
+      }
+      return result;
+    }
+
     // check if left, top, right, or bottom is animated from
     if ('left' in fromProperties && $(this).getStyleObject().left == 'auto') {
       $(this).css({
-        'left': '0px'
+        'left': '0'
       });
     } else if ('right' in fromProperties && $(this).getStyleObject().right == 'auto') {
       $(this).css({
-        'right': '0px'
+        'right': '0'
       });
     } else if ('top' in fromProperties && $(this).getStyleObject().top == 'auto') {
       $(this).css({
-        'top': '0px'
+        'top': '0'
       });
     } else if ('bottom' in fromProperties && $(this).getStyleObject().bottom == 'auto') {
       $(this).css({
-        'bottom': '0px'
+        'bottom': '0'
       });
     }
 
     // get inital styles from element
     var originalProperties = $(this).getStyleObject();
-    $(this).css(
-      fromProperties
-    );
+    $(this).css(fromProperties);
+
+    console.log(originalProperties);
 
     // check what values have changed
     var oldValues = filter($(this).getStyleObject(), originalProperties);
 
-    $(this).animate(oldValues, duration * 1000, easing, function() {
+    $(this).show().animate(oldValues, duration * 1000, easing, function() {
       if (callback) {
         callback();
       } else {
         callback
       }
     }, delay * 1000);
+
   }
 
   $.fn.animateTo = function(toProperties, duration, easing, callback, delay) {

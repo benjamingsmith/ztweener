@@ -19,6 +19,8 @@
       border-radius: 50%;
       width: 200px;
       height: 200px;
+      top:10px;
+      right:10px;
     }
     </style>
   </head>
@@ -27,8 +29,9 @@
     <div class="ball"></div>
     <button>kill delays</button>
     <script type="text/javascript" src="zepto.min.js"></script>
-    <script type="text/javascript" src="zepto_fx.min.js"></script>
-    <script type="text/javascript" src="../ztweener.js"></script>
+    <script type="text/javascript" src="../vendor/detect.js"></script>
+    <script type="text/javascript" src="../vendor/fx.js"></script>
+    <script type="text/javascript" src="../ztweener.min.js"></script>
     <script>
     $(document).on('ready', function() {
       $.delayedCall(.5,function(){

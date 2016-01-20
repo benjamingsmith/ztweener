@@ -10,7 +10,7 @@ $(el).animateTo({
   'property':'value'
 },durationTime, easing, callbackFunction, delay);
 ```
-###Animate From
+###Animate From (Not supported in FireFox at the moment)
 ```javascript
 $(el).animateFrom({
   'property':'value'
@@ -28,7 +28,7 @@ $.delayedCall(delayTime, function(){
 $.delayedCall(delayTime, functionName);
 ```
 
-###Kill all delayedCalls
+###Kill All delayedCalls
 ```javascript
 $.killDelays();
 ```

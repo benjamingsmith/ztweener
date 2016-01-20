@@ -27,3 +27,8 @@ $.delayedCall(delayTime, function(){
 ```javascript
 $.delayedCall(delayTime, functionName);
 ```
+
+###Kill all delayedCalls
+```javascript
+$.killDelays();
+```

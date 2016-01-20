@@ -1,15 +1,11 @@
+/** version 1.1 **/
+// added killDelays
+// fixing animateFrom in Firefox
+
 (function($) {
-  function filter(obj1, obj2) {
-    var result = {};
-    for (key in obj1) {
-      if (obj2[key] != obj1[key]) result[key] = obj2[key];
-      if (typeof obj2[key] == 'array' && typeof obj1[key] == 'array')
-        result[key] = arguments.callee(obj1[key], obj2[key]);
-      if (typeof obj2[key] == 'object' && typeof obj1[key] == 'object')
-        result[key] = arguments.callee(obj1[key], obj2[key]);
-    }
-    return result;
-  }
+  // all delayedCalls will be placed in here in case they need to be killed
+  var allDelays = [];
+  var currentBrowser = $.browser;
 
   $.fn.getStyleObject = function() {
     var dom = this.get(0);
@@ -38,12 +34,31 @@
   }
 
   $.delayedCall = function(delay, funct) {
-    setTimeout(function() {
+    var newDelay = setTimeout(function() {
       funct();
     }, delay * 1000);
+    allDelays.push(newDelay);
+  }
+
+  $.killDelays = function() {
+    $.each(allDelays, function(i, v) {
+      clearTimeout(v);
+    });
   }
 
   $.fn.animateFrom = function(fromProperties, duration, easing, callback, delay) {
+    function filter(obj1, obj2) {
+      var result = {};
+      for (key in obj1) {
+        if (obj2[key] != obj1[key]) result[key] = obj2[key];
+        if (typeof obj2[key] == 'array' && typeof obj1[key] == 'array')
+          result[key] = arguments.callee(obj1[key], obj2[key]);
+        if (typeof obj2[key] == 'object' && typeof obj1[key] == 'object')
+          result[key] = arguments.callee(obj1[key], obj2[key]);
+      }
+      return result;
+    }
+
     // check if left, top, right, or bottom is animated from
     if ('left' in fromProperties && $(this).getStyleObject().left == 'auto') {
       $(this).css({
@@ -65,20 +80,21 @@
 
     // get inital styles from element
     var originalProperties = $(this).getStyleObject();
-    $(this).css(
-      fromProperties
-    );
+    $(this).css(fromProperties);
+
+    console.log(originalProperties);
 
     // check what values have changed
     var oldValues = filter($(this).getStyleObject(), originalProperties);
 
-    $(this).animate(oldValues, duration * 1000, easing, function() {
+    $(this).show().animate(oldValues, duration * 1000, easing, function() {
       if (callback) {
         callback();
       } else {
         callback
       }
     }, delay * 1000);
+
   }
 
   $.fn.animateTo = function(toProperties, duration, easing, callback, delay) {

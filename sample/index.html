@@ -19,20 +19,37 @@
       border-radius: 50%;
       width: 200px;
       height: 200px;
+      top:10px;
+      right:10px;
     }
     </style>
   </head>
 
   <body>
     <div class="ball"></div>
+    <button>kill delays</button>
     <script type="text/javascript" src="zepto.min.js"></script>
-    <script type="text/javascript" src="zepto_fx.min.js"></script>
-    <script type="text/javascript" src="../ztweener.js"></script>
+    <script type="text/javascript" src="../vendor/detect.js"></script>
+    <script type="text/javascript" src="../vendor/fx.js"></script>
+    <script type="text/javascript" src="../ztweener.min.js"></script>
     <script>
     $(document).on('ready', function() {
+      $.delayedCall(.5,function(){
+        console.log('delay .5 secs');
+      });
+      $.delayedCall(2,function(){
+        console.log('delay 2 secs');
+      });
+      $.delayedCall(4,function(){
+        console.log('delay 4 secs');
+      });
       $('.ball').animateFrom({
         'right': '-400px'
       }, .5, 'ease-out', null, 0);
+
+      $('button').on('click',function(){
+        $.killDelays();
+      })
     });
     </script>
   </body>

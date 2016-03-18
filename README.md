@@ -10,7 +10,7 @@ $(el).animateTo({
   'property':'value'
 },durationTime, easing, callbackFunction, delay);
 ```
-###Animate From (Not supported in FireFox at the moment)
+###Animate From (Not supported in Firefox at the moment)
 ```javascript
 $(el).animateFrom({
   'property':'value'
